@@ -25,7 +25,7 @@ class ContactsRepositoryTest {
 
     @Transactional
     @Test
-    public void 연락처저장_불러오기() {
+    public void 연락처저장_이름순으로불러오기() {
         // given
         Contacts contacts1 = Contacts.builder()
                 .name("홍길동")
