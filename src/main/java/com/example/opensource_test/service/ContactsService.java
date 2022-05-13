@@ -24,7 +24,7 @@ public class ContactsService {
     }
 
     public List<ContactsDto> findAll() {
-        return contactsRepository.findAll(Sort.by("name")).stream().map(ContactsDto::new).collect(Collectors.toList());
+        return contactsRepository.findAll().stream().map(ContactsDto::new).collect(Collectors.toList());
     }
 
     public List<ContactsDto> findByName(String name) {
