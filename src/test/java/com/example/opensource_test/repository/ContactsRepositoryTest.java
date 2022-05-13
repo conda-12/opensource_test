@@ -27,19 +27,25 @@ class ContactsRepositoryTest {
     @Test
     public void 연락처저장_불러오기() {
         // given
-        Contacts contacts = Contacts.builder()
+        Contacts contacts1 = Contacts.builder()
                 .name("홍길동")
                 .email("hong@gmail.com")
                 .phoneNum("01099998888")
                 .build();
 
+        Contacts contacts2 = Contacts.builder()
+                .name("강감찬")
+                .email("kang@gmail.com")
+                .phoneNum("01011112222").build();
+
         // when
-        contactsRepository.save(contacts);
+        contactsRepository.save(contacts1);
+        contactsRepository.save(contacts2);
         List<Contacts> list = contactsRepository.findAll();
 
         //then
-        assertThat(list.size()).isEqualTo(1);
-        assertThat(list.get(0)).isEqualTo(contacts);
+        assertThat(list.size()).isEqualTo(2);
+        assertThat(list.get(0)).isEqualTo(contacts2);
 
 
     }
