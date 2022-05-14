@@ -23,7 +23,7 @@ public class ContactService {
      */
     public Long add(ContactDto dto) {
         Contact contact = contactRepository.save(dto.toEntity());
-        log.info("ADD CONTACT ID : " + contact.getId());
+        log.info("ADD CONTACT ID:" + contact.getId());
         return contact.getId();
     }
 
@@ -32,6 +32,7 @@ public class ContactService {
      */
     public Page<ContactDto> findAll(Integer offset, Integer limit) {
         int page = offset / limit;
+        log.info("FIND CONTACT PAGE:" + page);
         Pageable pageable = PageRequest.of(page, limit, Sort.by("name"));
         return contactRepository.findAll(pageable).map(ContactDto::new);
     }
@@ -41,7 +42,10 @@ public class ContactService {
      */
     public Page<ContactDto> findByName(String name, Integer offset, Integer limit) {
         int page = offset / limit;
+        log.info("FIND CONTACT BY NAME:" + name + " PAGE:" + page);
+
         Pageable pageable = PageRequest.of(page, limit);
+
         return contactRepository.findByNameOrderByName(name, pageable).map(ContactDto::new);
     }
 
@@ -50,7 +54,7 @@ public class ContactService {
      */
     public ContactDto findById(Long id) {
         Contact contact = contactRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 연락처가 없습니다. id : " + id));
-        log.info("READ CONTACT : " + id);
+        log.info("READ CONTACT ID:" + id);
         return new ContactDto(contact);
     }
 
@@ -60,7 +64,7 @@ public class ContactService {
     public Long update(ContactDto dto) {
         Contact contact = contactRepository.findById(dto.getId()).orElseThrow(() -> new IllegalArgumentException("해당 연락처가 없습니다. id : " + dto.getId()));
         contact.update(dto.getName(), dto.getEmail(), dto.getPhoneNum());
-        log.info("UPDATE CONTACT ID : " + dto.getId());
+        log.info("UPDATE CONTACT ID:" + dto.getId());
         return contact.getId();
     }
 
@@ -70,7 +74,7 @@ public class ContactService {
     public void delete(Long id) {
         Contact contact = contactRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 연락처가 없습니다. id : " + id));
         contactRepository.delete(contact);
-        log.info("DELETE CONTACT ID : " + id);
+        log.info("DELETE CONTACT ID:" + id);
     }
 
 }
