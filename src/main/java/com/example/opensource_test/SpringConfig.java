@@ -8,12 +8,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ContactConfig {
+public class SpringConfig {
 
     private final ContactRepository contactRepository;
 
     @Autowired
-    public ContactConfig(ContactRepository contactRepository) {
+    public SpringConfig(ContactRepository contactRepository) {
         this.contactRepository = contactRepository;
     }
 

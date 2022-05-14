@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.time.LocalDateTime;
 
 @Data
 public class ContactDto {
@@ -23,6 +24,10 @@ public class ContactDto {
     @NotBlank(message = "전화번호는 필수 입력 값입니다.")
     private String phoneNum;
 
+    private LocalDateTime createDate;
+
+    private LocalDateTime modifyDate;
+
     public ContactDto() {
         this.email = "";
     }
@@ -32,6 +37,8 @@ public class ContactDto {
         this.name = entity.getName();
         this.email = entity.getEmail();
         this.phoneNum = entity.getPhoneNum();
+        this.createDate = entity.getCreateDate();
+        this.modifyDate = entity.getModifyDate();
     }
 
     public Contact toEntity() {
