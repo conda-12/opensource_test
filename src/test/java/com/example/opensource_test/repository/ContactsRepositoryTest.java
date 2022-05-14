@@ -7,21 +7,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-class contactRepositoryTest {
+class ContactRepositoryTest {
 
     @Autowired
     private ContactRepository contactRepository;
 
     @AfterEach
-    public void afterEach() {
+    public void tearDown() {
         contactRepository.deleteAll();
     }
 
@@ -44,11 +45,13 @@ class contactRepositoryTest {
         // when
         contactRepository.save(contact1);
         contactRepository.save(contact2);
-        List<Contact> list = contactRepository.findAll();
 
         //then
+        Page<Contact> page = contactRepository.findAll(PageRequest.of(0, 10, Sort.by("name")));
+        List<Contact> list = page.getContent();
         assertThat(list.size()).isEqualTo(2);
         assertThat(list.get(0)).isEqualTo(contact2);
+
     }
 
     @Transactional

@@ -11,9 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
@@ -32,7 +29,8 @@ public class ContactService {
      * 연락처 전체 조회
      */
     public Page<ContactDto> findAll(Integer offset, Integer limit) {
-        Pageable pageable = PageRequest.of(offset, limit, Sort.by("name"));
+        int page = offset / limit;
+        Pageable pageable = PageRequest.of(page, limit, Sort.by("name"));
         return contactRepository.findAll(pageable).map(ContactDto::new);
     }
 
@@ -40,7 +38,8 @@ public class ContactService {
      * 연락처 이름 검색 조회
      */
     public Page<ContactDto> findByName(String name, Integer offset, Integer limit) {
-        Pageable pageable = PageRequest.of(offset, limit);
+        int page = offset / limit;
+        Pageable pageable = PageRequest.of(page, limit);
         return contactRepository.findByNameOrderByName(name, pageable).map(ContactDto::new);
     }
 

@@ -1,21 +1,29 @@
 package com.example.opensource_test.service;
 
 import com.example.opensource_test.dto.ContactDto;
+import com.example.opensource_test.repository.ContactRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-class contactServiceTest {
+class ContactServiceTest {
 
     @Autowired
     private ContactService contactService;
+
+    @Autowired
+    private ContactRepository contactRepository;
+
+    @AfterEach
+    public void tearDown(){
+        contactRepository.deleteAll();
+    }
 
     @Test
     void 등록_불러오기() {
