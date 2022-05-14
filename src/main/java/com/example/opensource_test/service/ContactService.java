@@ -22,7 +22,9 @@ public class ContactService {
      * 연락처 등록
      */
     public Long add(ContactDto dto) {
-        return contactRepository.save(dto.toEntity()).getId();
+        Contact contact = contactRepository.save(dto.toEntity());
+        log.info("ADD CONTACT ID : " + contact.getId());
+        return contact.getId();
     }
 
     /**
@@ -48,6 +50,7 @@ public class ContactService {
      */
     public ContactDto findById(Long id) {
         Contact contact = contactRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 연락처가 없습니다. id : " + id));
+        log.info("READ CONTACT : " + id);
         return new ContactDto(contact);
     }
 
@@ -57,6 +60,7 @@ public class ContactService {
     public Long update(ContactDto dto) {
         Contact contact = contactRepository.findById(dto.getId()).orElseThrow(() -> new IllegalArgumentException("해당 연락처가 없습니다. id : " + dto.getId()));
         contact.update(dto.getName(), dto.getEmail(), dto.getPhoneNum());
+        log.info("UPDATE CONTACT ID : " + dto.getId());
         return contact.getId();
     }
 
@@ -66,6 +70,7 @@ public class ContactService {
     public void delete(Long id) {
         Contact contact = contactRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 연락처가 없습니다. id : " + id));
         contactRepository.delete(contact);
+        log.info("DELETE CONTACT ID : " + id);
     }
 
 }
