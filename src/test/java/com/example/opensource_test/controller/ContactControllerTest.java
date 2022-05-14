@@ -135,4 +135,23 @@ class ContactControllerTest {
 
     }
 
+    @Test
+    void 유효성_검사() throws Exception {
+        // given
+        String name = "홍길동";
+        String email = "hong@gmail.com";
+        String phoneNum = "11112222";
+        ContactDto dto = new ContactDto();
+        dto.setName(name);
+        dto.setEmail(email);
+        dto.setPhoneNum(phoneNum);
+
+        // then
+        mvc.perform(post("/api/v1/contact")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(dto)))
+                .andExpect(status().isBadRequest());
+
+    }
+
 }
