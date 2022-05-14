@@ -7,11 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@RequestMapping("/api/vi/contact")
+@RequestMapping("/api/v1/contact")
 @ResponseBody
 @RequiredArgsConstructor
 public class ContactController {
@@ -19,25 +19,23 @@ public class ContactController {
     private final ContactService contactService;
 
     @PostMapping
-    public ResponseEntity<?> addContact(@RequestBody ContactDto dto) {
-        try {
-            dto.setId(null);
-            Long id = contactService.add(dto);
-            return ResponseEntity.ok().body(id);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+    public ResponseEntity<?> addContact(@Validated @RequestBody ContactDto dto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
+        dto.setId(null);
+        Long id = contactService.add(dto);
+        return ResponseEntity.ok().body(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateContact(@PathVariable Long id, @RequestBody ContactDto dto) {
-        try {
-            dto.setId(id);
-            contactService.update(dto);
-            return ResponseEntity.ok().body(id);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+    public ResponseEntity<?> updateContact(@PathVariable Long id, @Validated @RequestBody ContactDto dto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
+        dto.setId(id);
+        contactService.update(dto);
+        return ResponseEntity.ok().body(id);
     }
 
     @DeleteMapping("/{id}")
