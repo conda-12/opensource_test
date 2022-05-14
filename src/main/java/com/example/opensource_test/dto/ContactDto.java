@@ -1,6 +1,6 @@
 package com.example.opensource_test.dto;
 
-import com.example.opensource_test.entity.Contacts;
+import com.example.opensource_test.entity.Contact;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +10,7 @@ import javax.validation.constraints.Pattern;
 
 @Data
 @NoArgsConstructor
-public class ContactsDto {
+public class ContactDto {
 
     private Long id;
 
@@ -25,15 +25,15 @@ public class ContactsDto {
     @NotBlank(message = "전화번호는 필수 입력 값입니다.")
     private String phoneNum;
 
-    public ContactsDto(Contacts entity) {
+    public ContactDto(Contact entity) {
         this.id = entity.getId();
         this.name = entity.getName();
         this.email = entity.getEmail();
         this.phoneNum = entity.getPhoneNum();
     }
 
-    public Contacts toEntity() {
-        return Contacts.builder()
+    public Contact toEntity() {
+        return Contact.builder()
                 .name(name)
                 .email(email)
                 .phoneNum(phoneNum)

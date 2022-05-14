@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Contacts {
+public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,7 +20,7 @@ public class Contacts {
     private String phoneNum;
 
     @Builder
-    public Contacts(String name, String email, String phoneNum) {
+    public Contact(String name, String email, String phoneNum) {
         this.name = name;
         this.email = email;
         this.phoneNum = phoneNum;

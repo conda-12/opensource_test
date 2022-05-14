@@ -1,18 +1,21 @@
 package com.example.opensource_test.service;
 
-import com.example.opensource_test.dto.ContactsDto;
+import com.example.opensource_test.dto.ContactDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-class ContactsServiceTest {
+class contactServiceTest {
 
     @Autowired
-    private ContactsService contactsService;
+    private ContactService contactService;
 
     @Test
     void 등록_불러오기() {
@@ -20,18 +23,19 @@ class ContactsServiceTest {
         String name = "홍길동";
         String email = "hong@gmail.com";
         String phoneNum = "01011112222";
-        ContactsDto dto = new ContactsDto();
-        dto.setName(name);
-        dto.setEmail(email);
-        dto.setPhoneNum(phoneNum);
+        ContactDto saveDto = new ContactDto();
+        saveDto.setName(name);
+        saveDto.setEmail(email);
+        saveDto.setPhoneNum(phoneNum);
 
         //when
-        Long id = contactsService.add(dto);
-        ContactsDto result = contactsService.findById(id);
+        Long id = contactService.add(saveDto);
+        Page<ContactDto> result = contactService.findAll(0, 10);
+        ContactDto dto = result.stream().findAny().get();
 
         //then
-        assertThat(result.getName()).isEqualTo(name);
-        assertThat(result.getPhoneNum()).isEqualTo(phoneNum);
+        assertThat(dto.getName()).isEqualTo(name);
+        assertThat(dto.getPhoneNum()).isEqualTo(phoneNum);
     }
 
     @Test
@@ -40,18 +44,18 @@ class ContactsServiceTest {
         String name = "홍길동";
         String email = "hong@gmail.com";
         String phoneNum = "01011112222";
-        ContactsDto saveDto = new ContactsDto();
+        ContactDto saveDto = new ContactDto();
         saveDto.setName(name);
         saveDto.setEmail(email);
         saveDto.setPhoneNum(phoneNum);
 
-        Long id1 = contactsService.add(saveDto);
-        ContactsDto findDto = contactsService.findById(id1);
+        Long id1 = contactService.add(saveDto);
+        ContactDto findDto = contactService.findById(id1);
 
         //when
         findDto.setName("강감찬");
-        Long id2 = contactsService.update(findDto);
-        ContactsDto updatedDto = contactsService.findById(id2);
+        Long id2 = contactService.update(findDto);
+        ContactDto updatedDto = contactService.findById(id2);
 
         //then
         assertThat(updatedDto.getName()).isEqualTo("강감찬");
@@ -64,16 +68,16 @@ class ContactsServiceTest {
         String name = "홍길동";
         String email = "hong@gmail.com";
         String phoneNum = "01011112222";
-        ContactsDto saveDto = new ContactsDto();
+        ContactDto saveDto = new ContactDto();
         saveDto.setName(name);
         saveDto.setEmail(email);
         saveDto.setPhoneNum(phoneNum);
 
         //when
-        Long id = contactsService.add(saveDto);
+        Long id = contactService.add(saveDto);
 
         // then
-        assertThrows(IllegalArgumentException.class, () -> contactsService.findById(id + 1));
+        assertThrows(IllegalArgumentException.class, () -> contactService.findById(id + 1));
 
     }
 }
