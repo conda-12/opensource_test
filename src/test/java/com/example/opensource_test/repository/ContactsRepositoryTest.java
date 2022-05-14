@@ -1,7 +1,6 @@
 package com.example.opensource_test.repository;
 
 import com.example.opensource_test.entity.Contacts;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +45,24 @@ class ContactsRepositoryTest {
         //then
         assertThat(list.size()).isEqualTo(2);
         assertThat(list.get(0)).isEqualTo(contacts2);
+    }
 
+    @Transactional
+    @Test
+    public void 이름검색(){
+        // given
+        Contacts contacts = Contacts.builder()
+                .name("홍길동")
+                .email("hong@gmail.com")
+                .phoneNum("01099998888")
+                .build();
 
+        // when
+        contactsRepository.save(contacts);
+        List<Contacts> result = contactsRepository.findByName("홍길동");
+
+        //then
+        assertThat(result.get(0)).isEqualTo(contacts);
     }
 
 
