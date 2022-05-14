@@ -18,29 +18,47 @@ public class ContactsService {
 
     private final ContactsRepository contactsRepository;
 
-
+    /**
+     * 연락처 등록
+     */
     public Long add(ContactsDto dto) {
         return contactsRepository.save(dto.toEntity()).getId();
     }
 
+    /**
+     * 연락처 전체 조회
+     */
     public List<ContactsDto> findAll() {
         return contactsRepository.findAll().stream().map(ContactsDto::new).collect(Collectors.toList());
     }
 
+    /**
+     * 연락처 이름 검색 조회
+     */
     public List<ContactsDto> findByName(String name) {
         return contactsRepository.findByName(name).stream().map(ContactsDto::new).collect(Collectors.toList());
     }
 
-    public Contacts findById(Long id) {
-        return contactsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 연락처가 없습니다. id : " + id));
+    /**
+     * 연락처 조회
+     */
+    public ContactsDto findById(Long id) {
+        Contacts contacts = contactsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 연락처가 없습니다. id : " + id));
+        return new ContactsDto(contacts);
     }
 
+    /**
+     * 연락처 수정
+     */
     public Long update(ContactsDto dto) {
         Contacts contacts = contactsRepository.findById(dto.getId()).orElseThrow(() -> new IllegalArgumentException("해당 연락처가 없습니다. id : " + dto.getId()));
-        contacts.update(dto.getName(), dto.getEmail(), dto.getName());
+        contacts.update(dto.getName(), dto.getEmail(), dto.getPhoneNum());
         return contacts.getId();
     }
 
+    /**
+     * 연락처 삭제
+     */
     public void delete(Long id) {
         Contacts contacts = contactsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 연락처가 없습니다. id : " + id));
         contactsRepository.delete(contacts);
