@@ -35,7 +35,8 @@ class ContactsRepositoryTest {
         Contacts contacts2 = Contacts.builder()
                 .name("강감찬")
                 .email("kang@gmail.com")
-                .phoneNum("01011112222").build();
+                .phoneNum("01011112222")
+                .build();
 
         // when
         contactsRepository.save(contacts1);
