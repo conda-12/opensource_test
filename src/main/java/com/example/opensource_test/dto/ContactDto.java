@@ -2,14 +2,12 @@ package com.example.opensource_test.dto;
 
 import com.example.opensource_test.entity.Contact;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Data
-@NoArgsConstructor
 public class ContactDto {
 
     private Long id;
@@ -24,6 +22,10 @@ public class ContactDto {
     @Pattern(regexp = "^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$", message = "전화번호 형식을 확인해주세요.")
     @NotBlank(message = "전화번호는 필수 입력 값입니다.")
     private String phoneNum;
+
+    public ContactDto() {
+        this.email = "";
+    }
 
     public ContactDto(Contact entity) {
         this.id = entity.getId();
